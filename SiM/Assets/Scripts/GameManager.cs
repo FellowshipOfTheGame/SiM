@@ -15,12 +15,26 @@ public class GameManager : MonoBehaviour
 
     [Header("Level")]
     public Level levels;
-    [Header("Sprites")]
-    public Sprite center;
-    public Sprite topLeft;
-    public Sprite topRight;
-    public Sprite bottomLeft;
-    public Sprite bottomRight;
+    [System.Serializable]
+    public struct Sprites
+    {
+        public Sprite center;
+        public Sprite topLeft;
+        public Sprite topRight;
+        public Sprite bottomLeft;
+        public Sprite bottomRight;
+    }
+    public enum SpriteType
+    {
+        CENTER,
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT
+    }
+    public Sprites sprites;
+    public Sprites xSprites;
+    public GameObject pixelPrefab;
 
     private Color[,] board;
     private GameObject boardObject;
@@ -52,6 +66,21 @@ public class GameManager : MonoBehaviour
         Load();
     }
 
+    void Update()
+    {
+        if(Input.GetMouseButton(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit info;
+            if(Physics.Raycast(ray, out info))
+            {
+                Pixel script = info.collider.gameObject.GetComponent<Pixel>();
+                if (script)
+                    script.OnSelect(currentColor);
+            }
+        }
+    }
+
     void OnDestroy()
     {
         if(playerData != null)
@@ -60,8 +89,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager GetInstance()
     {
-        if (instance == null)
-            instance = new GameManager();
+        //if (instance == null)
+        //    instance = new GameManager();
         return instance;
     }
 
@@ -114,27 +143,39 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < map.width; j++)
             {
                 board[j, i] = inlineBoard[i * map.width + j];
-                GameObject spriteObject = new GameObject("Pixel" + j + "," + i);
+                GameObject spriteObject = GameObject.Instantiate<GameObject>(pixelPrefab);
                 spriteObject.transform.SetParent(boardObject.transform);
                 spriteObject.transform.localPosition = new Vector2(j, i);
-                spriteObject.AddComponent<SpriteRenderer>();
-                Sprite sprite = center;
+                Sprite sprite = sprites.center;
+                spriteObject.GetComponent<Pixel>().type = SpriteType.CENTER;
                 if(i == 0)
                 {
                     if (j == 0)
-                        sprite = bottomLeft;
+                    {
+                        sprite = sprites.bottomLeft;
+                        spriteObject.GetComponent<Pixel>().type = SpriteType.BOTTOM_LEFT;
+                    }
                     else if (j == map.width - 1)
-                        sprite = bottomRight;
+                    {
+                        sprite = sprites.bottomRight;
+                        spriteObject.GetComponent<Pixel>().type = SpriteType.BOTTOM_RIGHT;
+                    }
                 }
                 else if(i == map.height - 1)
                 {
                     if (j == 0)
-                        sprite = topLeft;
+                    {
+                        sprite = sprites.topLeft;
+                        spriteObject.GetComponent<Pixel>().type = SpriteType.TOP_LEFT;
+                    }
                     else if (j == map.width - 1)
-                        sprite = topRight;
+                    {
+                        sprite = sprites.topRight;
+                        spriteObject.GetComponent<Pixel>().type = SpriteType.TOP_RIGHT;
+                    }
                 }
                 spriteObject.GetComponent<SpriteRenderer>().sprite = sprite;
-                spriteObject.GetComponent<SpriteRenderer>().color = board[j, i];
+                //spriteObject.GetComponent<SpriteRenderer>().color = board[j, i];
             }
         }
 
