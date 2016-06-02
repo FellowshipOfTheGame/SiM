@@ -1,17 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance = null;
-    private static string secretKey = "CkxO#12C2T@!ciN@$sLpL*X3cmUyK&_J";
 
-    public static string playerDataFilename = "/player.dat";
-    private GameData playerData = null;
 
     [Header("Level")]
     public Level levels;
@@ -41,20 +33,6 @@ public class GameManager : MonoBehaviour
     private int currentLevel = 0;
     internal Color? currentColor = null;
 
-    [System.Serializable]
-    public class GameData
-    {
-        public string playerName;
-        public int playerId;
-        public float[] time;
-
-        public GameData()
-        {
-            playerName = "Player Name";
-            playerId = 0;
-            time = null;
-        }
-    }
 
     void Awake()
     {
@@ -63,14 +41,13 @@ public class GameManager : MonoBehaviour
         else if(instance != this)
             Destroy(gameObject);
         DontDestroyOnLoad(this);
-        Load();
     }
 
     void Update()
     {
         if(Input.GetMouseButton(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = new Ray(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
             RaycastHit info;
             if(Physics.Raycast(ray, out info))
             {
@@ -81,55 +58,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnDestroy()
-    {
-        if(playerData != null)
-            Save();
-    }
-
     public static GameManager GetInstance()
     {
-        //if (instance == null)
-        //    instance = new GameManager();
         return instance;
-    }
-
-    void Load()
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        if (File.Exists(Application.persistentDataPath + GameManager.playerDataFilename))
-        {
-            FileStream stream = File.Open(Application.persistentDataPath + GameManager.playerDataFilename, FileMode.Open);
-            try
-            {
-                playerData = (GameData)formatter.Deserialize(stream);
-            }catch(SerializationException)
-            {
-                playerData = new GameData();
-                formatter.Serialize(stream, playerData);
-            }
-            stream.Close();
-        }
-        else
-            playerData = new GameData();
-
-        LoadBoard();
-    }
-
-    void Save()
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = File.Open(Application.persistentDataPath + GameManager.playerDataFilename, FileMode.OpenOrCreate);
-        formatter.Serialize(stream, playerData);
-        stream.Close();
     }
 
     void LoadBoard()
     {
-        if (playerData.time == null)
-            currentLevel = 0;
-        else
-            currentLevel = Mathf.Min(levels.maps.Length, playerData.time.Length);
+        currentLevel = ScoreManager.GetPlayerLevel();
         Texture2D map = levels.maps[currentLevel];
         Color[] inlineBoard = map.GetPixels();
         board = new Color[map.width, map.height];
