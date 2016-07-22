@@ -5,9 +5,8 @@ using System.Collections;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Pixel : MonoBehaviour
 {
-    SpriteRenderer sprite;
-
-    public GameManager.SpriteType type;
+    private SpriteRenderer sprite;
+    private Color? currentColor;
 
     void Awake()
     {
@@ -16,36 +15,17 @@ public class Pixel : MonoBehaviour
 
     public void OnSelect(Color? color)
     {
-        GameManager.Sprites sprites;
         if (color != null)
         {
             sprite.color = color.Value;
-            sprites = GameManager.GetInstance().sprites;
+            sprite.sprite = GameManager.GetInstance().sprite;
         }
         else
         {
             sprite.color = Color.white;
-            sprites = GameManager.GetInstance().xSprites;
+            sprite.sprite = GameManager.GetInstance().xSprite;
         }
-        switch (type)
-        {
-            case GameManager.SpriteType.TOP_LEFT:
-                sprite.sprite = sprites.topLeft;
-                break;
-            case GameManager.SpriteType.TOP_RIGHT:
-                sprite.sprite = sprites.topRight;
-                break;
-            case GameManager.SpriteType.BOTTOM_LEFT:
-                sprite.sprite = sprites.bottomLeft;
-                break;
-            case GameManager.SpriteType.BOTTOM_RIGHT:
-                sprite.sprite = sprites.bottomRight;
-                break;
-            case GameManager.SpriteType.CENTER:
-            default:
-                sprite.sprite = sprites.center;
-                break;
-        }
-        print("ASD");
+
+        currentColor = color;
     }
 }
