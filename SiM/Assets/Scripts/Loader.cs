@@ -12,6 +12,6 @@ public class Loader : MonoBehaviour
         if (GameManager.GetInstance() == null)
             Instantiate(gameManager);
         if (ScoreManager.GetInstance() == null)
-            Instantiate(gameManager);
+            Instantiate(scoreManager);
     }
 }
