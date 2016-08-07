@@ -5,6 +5,14 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance = null;
 
+    public bool Volume
+    {
+        set
+        {
+            instance.GetComponent<AudioSource>().volume = (value ? 1f : 0f); 
+        }
+    }
+
     [Header("Levels")]
     public Collection levels;
     

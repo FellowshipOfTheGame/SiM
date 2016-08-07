@@ -8,8 +8,11 @@ public class Menu : MonoBehaviour
     public int colsCount = 1;
     public float margin = 25;
     public Collection levels;
+    public GameObject panel;
     public GameObject menuLevelPrefab;
+    public Text playerName;
     public Sprite locked;
+
     public int CurrentPage
     {
         get
@@ -27,8 +30,12 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        gridLayout = GetComponent<GridLayoutGroup>();
-        rectTransform = GetComponent<RectTransform>();
+        gridLayout =    panel.GetComponent<GridLayoutGroup>();
+        rectTransform = panel.GetComponent<RectTransform>();
+        for (int i = 0; i < 10; i++)
+        {
+            //ScoreManager.AddScore(i * 1000);
+        }
 
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = colsCount;
@@ -38,11 +45,12 @@ public class Menu : MonoBehaviour
         for (int i = 0; i < levelsPerPage; i++)
         {
             menuLevels[i] = Instantiate<GameObject>(menuLevelPrefab);
-            menuLevels[i].transform.SetParent(gameObject.transform, false);
+            menuLevels[i].transform.SetParent(panel.transform, false);
         }
 
         currentPage = 0;
         change = true;
+        playerName.text = ScoreManager.GetPlayerName();
     }
 
 	void Update ()
