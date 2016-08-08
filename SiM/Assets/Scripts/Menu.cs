@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -32,10 +32,6 @@ public class Menu : MonoBehaviour
     {
         gridLayout =    panel.GetComponent<GridLayoutGroup>();
         rectTransform = panel.GetComponent<RectTransform>();
-        for (int i = 0; i < 10; i++)
-        {
-            //ScoreManager.AddScore(i * 1000);
-        }
 
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = colsCount;

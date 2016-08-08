@@ -9,9 +9,9 @@ public class Loader : MonoBehaviour
 
     void Awake()
     {
-        if (GameManager.GetInstance() == null)
+        if (gameManager != null && GameManager.GetInstance() == null)
             Instantiate(gameManager);
-        if (ScoreManager.GetInstance() == null)
+        if (scoreManager != null && ScoreManager.GetInstance() == null)
             Instantiate(scoreManager);
     }
 }

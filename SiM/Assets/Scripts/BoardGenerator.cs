@@ -1,10 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class BoardGenerator : MonoBehaviour {
-
-	private static BoardGenerator instance = null;
 
 	[System.Serializable]
 	public struct Sprites
@@ -28,7 +26,7 @@ public class BoardGenerator : MonoBehaviour {
 	private GameObject colorBoardObject;
 
 
-	public void LoadBoard(int level)
+    public void LoadBoard(int level)
 	{
 		//currentLevel = ScoreManager.GetPlayerLevel();
 		Texture2D map = GameManager.GetInstance().levels.levels[level].texture;

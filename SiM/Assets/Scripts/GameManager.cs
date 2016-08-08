@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Levels")]
     public Collection levels;
+    public static int level;
     
 	private BoardGenerator boardGenerator = null;
     public Color? currentColor = null;
@@ -38,7 +39,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-		currentTime += Time.deltaTime;
+        if (level != -1)
+        {
+            LoadBoard();
+            level = -1;
+        }
+        currentTime += Time.deltaTime;
 			
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		RaycastHit2D hit = Physics2D.Raycast (mousePos, Vector2.zero);
@@ -131,6 +137,7 @@ public class GameManager : MonoBehaviour
 				break;
 			}
 		}
+        print(hasWon);
 		if(hasWon) 
 		{
 			foreach (GameObject cell in pixels) {
@@ -156,7 +163,7 @@ public class GameManager : MonoBehaviour
 		currentTime = 0f;
 		if (boardGenerator == null)
 			boardGenerator = GetComponent<BoardGenerator> ();
-		boardGenerator.LoadBoard (6);
+        boardGenerator.LoadBoard(level);
 	}
 
 }
