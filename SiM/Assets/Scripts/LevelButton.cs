@@ -6,7 +6,7 @@ public class LevelButton : MonoBehaviour
     public int level;
     public void OnClick()
     {
-        GameManager.level = level;
+        BoardGenerator.level = level;
         UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Game");
     }
 }

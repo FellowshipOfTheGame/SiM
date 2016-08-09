@@ -15,6 +15,6 @@ public class VolumeButton : MonoBehaviour
             GetComponent<Image>().sprite = on;
         else
             GetComponent<Image>().sprite = off;
-        GameManager.GetInstance().Volume = volume;
+        Music.Volume = volume;
     }
 }

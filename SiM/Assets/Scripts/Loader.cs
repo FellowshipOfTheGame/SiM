@@ -4,13 +4,13 @@ using System.Collections;
 
 public class Loader : MonoBehaviour
 {
-    public GameObject gameManager;
+    public GameObject music;
     public GameObject scoreManager;
 
     void Awake()
     {
-        if (gameManager != null && GameManager.GetInstance() == null)
-            Instantiate(gameManager);
+        if (music != null && Music.GetInstance() == null)
+            Instantiate(music);
         if (scoreManager != null && ScoreManager.GetInstance() == null)
             Instantiate(scoreManager);
     }
