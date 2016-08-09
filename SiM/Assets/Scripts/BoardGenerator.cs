@@ -29,10 +29,10 @@ public class BoardGenerator : MonoBehaviour {
     public void LoadBoard(int level)
 	{
 		//currentLevel = ScoreManager.GetPlayerLevel();
-		Texture2D map = GameManager.GetInstance().levels.levels[level].texture;
+		Texture2D map = GameManager.GetInstance().levels.levels[level];
 		Color[] inlineBoard = map.GetPixels();
 		List<Color?> availableColors = new List<Color?>();	
-		Color backgroundColor = GameManager.GetInstance().levels.levels[level].background;
+		Color backgroundColor = GameManager.GetInstance().levels.backgrounds[level];
 		board = new Color[map.width, map.height];
 		if (boardObject != null)
 			Destroy(boardObject);

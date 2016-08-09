@@ -65,7 +65,7 @@ public class Menu : MonoBehaviour
             menuLevels[i].SetActive(true);
             if (i + currentPage * levelsPerPage < ScoreManager.GetPlayerLevel())
             {
-                Texture2D tex = levels.levels[i + currentPage * levelsPerPage].texture;
+                Texture2D tex = levels.levels[i + currentPage * levelsPerPage];
                 int seconds = ScoreManager.GetScore(i + currentPage * levelsPerPage);
                 menuLevels[i].GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
                 if (seconds > 0)
