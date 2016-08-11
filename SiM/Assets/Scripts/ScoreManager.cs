@@ -17,8 +17,7 @@ public class ScoreManager : MonoBehaviour
     private static string addScoreURL = "http://www.fog.icmc.usp.br/sim/addScore.php";
     private static string getScoreURL = "http://www.fog.icmc.usp.br/sim/getScore.php";
     private PlayerData playerData = new PlayerData("Player", 0);
-
-    private static bool waitingForServer = false;
+    
     private static string Error
     {
         get
@@ -67,8 +66,8 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        if(Load())
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        //if(Load())
+        //    UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
 
     void Update()
@@ -88,7 +87,7 @@ public class ScoreManager : MonoBehaviour
 
     public static int GetScore(int index)
     {
-        if (instance.playerData.scores.Count < index)
+        if (index < instance.playerData.scores.Count)
             return instance.playerData.scores[index];
         return -1;
     }
@@ -103,8 +102,10 @@ public class ScoreManager : MonoBehaviour
         return instance.playerData.GetLevel();
     }
 
-    public static void AddScore(int score)
+    public static void AddScore(int level, int score)
     {
+        if (level < instance.playerData.GetLevel())
+            return;
         instance.playerData.AddScore(score);
     }
 
@@ -113,13 +114,11 @@ public class ScoreManager : MonoBehaviour
         return instance.playerData.isSync;
     }
 
-    public static void Sync()
+    public static bool Sync()
     {
-        if (!IsSync() && !waitingForServer)
-        {
-            waitingForServer = true;
+        if (!IsSync())
             instance.StartCoroutine(SyncCoroutine());
-        }
+        return instance.playerData.isSync;
     }
 
     private static IEnumerator SyncCoroutine()
@@ -148,10 +147,15 @@ public class ScoreManager : MonoBehaviour
                 yield break;
             }
             PlayerData serverPlayer = JsonUtility.FromJson<PlayerData>(webRequest.text);
+
+            print(webRequest.text);
+            print(JsonUtility.ToJson(localPlayer));
+
             if (serverPlayer.GetLevel() < instance.playerData.GetLevel())
             {
                 for (int i = serverPlayer.GetLevel(); !quit && i < localPlayer.GetLevel(); i++)
                 {
+                    print("Asd");
                     hash = MD5.Md5Sum(serverPlayer.name + serverPlayer.id + i + localPlayer.scores[i] + secretKey);
 
                     form = new WWWForm();
@@ -170,7 +174,8 @@ public class ScoreManager : MonoBehaviour
                     }
                     else if (string.IsNullOrEmpty(webRequest.error))
                     {
-                        if(webRequest.text.Equals("OK"))
+                        print(webRequest.text);
+                        if (webRequest.text.Equals("OK"))
                             serverPlayer.AddScore(localPlayer.scores[i]);
                     }
                     else
@@ -184,7 +189,7 @@ public class ScoreManager : MonoBehaviour
             if (!quit)
             {
                 instance.playerData = serverPlayer;
-                instance.Save();
+                //instance.Save();
             }
             else
                 print("Server connection error");
@@ -198,7 +203,6 @@ public class ScoreManager : MonoBehaviour
                 yield break;
             }
         }
-        waitingForServer = true;
     }
 
     bool Load()

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -12,10 +12,10 @@ public class TimeUpdate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int currentTime = (int)GameManager.currentTime;
+        int currentTime = Mathf.RoundToInt(GameManager.currentTime);
         minutes = currentTime / 60;
         seconds = currentTime % 60;
-
-        textTime.text = "Tempo:\n" + minutes.ToString() + ":" + seconds.ToString("D2");
+        
+        textTime.text = "Tempo:\n" + minutes.ToString() + ":" + seconds.ToString("00");
     }
 }

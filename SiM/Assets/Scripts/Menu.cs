@@ -13,6 +13,13 @@ public class Menu : MonoBehaviour
     public Text playerName;
     public Sprite locked;
 
+    private GameObject[] menuLevels;
+    private int currentPage;
+    private GridLayoutGroup gridLayout;
+    private RectTransform rectTransform;
+    private int levelsPerPage;
+
+
     public int CurrentPage
     {
         get
@@ -21,12 +28,14 @@ public class Menu : MonoBehaviour
         }
     }
 
-    private GameObject[] menuLevels;
-    private int currentPage;
-    private GridLayoutGroup gridLayout;
-    private RectTransform rectTransform;
-    private int levelsPerPage;
-    private bool change;
+    public int LevelsPerPage
+    {
+        get
+        {
+            levelsPerPage = colsCount * colsCount;
+            return levelsPerPage;
+        }
+    }
 
     void Start()
     {
@@ -45,14 +54,11 @@ public class Menu : MonoBehaviour
         }
 
         currentPage = 0;
-        change = true;
         playerName.text = ScoreManager.GetPlayerName();
     }
 
 	void Update ()
     {
-        if (!change)
-            return;
         Rect bounds = rectTransform.rect;
         RectOffset offset = gridLayout.padding;
 
@@ -102,20 +108,45 @@ public class Menu : MonoBehaviour
                 menuLevels[i].SetActive(false);
             menuLevels[i].GetComponent<LevelButton>().level = i + currentPage * levelsPerPage;
         }
+        CheckMenuNav(previous);
+        CheckMenuNav(next);
+    }
+
+    public MenuNav previous;
+    public MenuNav next;
+
+    void CheckMenuNav(MenuNav nav)
+    {
+
+        switch (nav.type)
+        {
+            case MenuNav.NavType.Next:
+                if (currentPage == Mathf.CeilToInt(ScoreManager.GetPlayerLevel() / levelsPerPage + 1) - 1)
+                    nav.gameObject.SetActive(false);
+                else
+                    nav.gameObject.SetActive(true);
+                break;
+            case MenuNav.NavType.Prev:
+                if (currentPage == 0)
+                    nav.gameObject.SetActive(false);
+                else
+                    nav.gameObject.SetActive(true);
+                break;
+            default:
+                break;
+        }
     }
 
     public bool Next()
     {
-        change = true;
         currentPage++;
-        if (currentPage == Mathf.CeilToInt(ScoreManager.GetPlayerLevel() + 1) - 1)
+        if (currentPage == Mathf.CeilToInt(ScoreManager.GetPlayerLevel() / levelsPerPage + 1) - 1)
             return false;
         return true;
     }
 
     public bool Prev()
     {
-        change = true;
         currentPage--;
         if (currentPage == 0)
             return false;

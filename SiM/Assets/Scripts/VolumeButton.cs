@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class VolumeButton : MonoBehaviour
@@ -7,6 +7,14 @@ public class VolumeButton : MonoBehaviour
     public Sprite off;
 
     private bool volume = false;
+
+    public void Start()
+    {
+        if ((volume = Music.Volume))
+            GetComponent<Image>().sprite = on;
+        else
+            GetComponent<Image>().sprite = off;
+    }
 
     public void OnClick()
     {

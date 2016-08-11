@@ -6,6 +6,10 @@ public class GameManager : MonoBehaviour
     private BoardGenerator boardGenerator = null;
     public static Color? currentColor = null;
     public static float currentTime;
+    [HideInInspector]
+    public bool hasWon = false;
+    [HideInInspector]
+    public bool pause = false;
 
     //Mouse Variables
     private bool isMouseBeingDragged = false;
@@ -13,13 +17,21 @@ public class GameManager : MonoBehaviour
     private Line highlightLine;
     private Line highlightColumn;
 
+    private int currentLevel;
+
     void Start()
     {
-        LoadBoard();
+        currentTime = 0f;
+        if (boardGenerator == null)
+            boardGenerator = GetComponent<BoardGenerator>();
+        currentLevel = BoardGenerator.level;
+        boardGenerator.LoadBoard();
     }
 
     void Update()
     {
+        if (hasWon || pause)
+            return;
         currentTime += Time.deltaTime;
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -84,7 +96,8 @@ public class GameManager : MonoBehaviour
                             script.OnSelect(currentColor);
                         else if (Input.GetMouseButton(1) && !Input.GetMouseButton(0))
                             script.OnSelect(null);
-                        CheckWin();
+                        if (CheckWin())
+                            ScoreManager.AddScore(currentLevel, Mathf.RoundToInt(currentTime));
                     }
                 }
 
@@ -115,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     public bool CheckWin()
     {
-        bool hasWon = true;
+        hasWon = true;
         GameObject[] pixels = GameObject.FindGameObjectsWithTag("Pixel");
         foreach (GameObject cell in pixels)
         {
@@ -142,14 +155,6 @@ public class GameManager : MonoBehaviour
         }
 
         return hasWon;
-    }
-
-    public void LoadBoard()
-    {
-        currentTime = 0f;
-        if (boardGenerator == null)
-            boardGenerator = GetComponent<BoardGenerator>();
-        boardGenerator.LoadBoard();
     }
 
 }

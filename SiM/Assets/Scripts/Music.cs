@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -24,6 +24,10 @@ public class Music : MonoBehaviour
         set
         {
             instance.GetComponent<AudioSource>().volume = (value ? 1f : 0f);
+        }
+        get
+        {
+            return (instance.GetComponent<AudioSource>().volume > 0f? true : false);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -14,10 +14,13 @@ public class SyncIcon : MonoBehaviour
 
     IEnumerator Loop()
     {
-        if (ScoreManager.IsSync())
-            GetComponent<Image>().sprite = ok;
-        else
-            GetComponent<Image>().sprite = problem;
-        yield return new WaitForSeconds(delay);
+        while (true)
+        {
+            if (ScoreManager.Sync())
+                GetComponent<Image>().sprite = ok;
+            else
+                GetComponent<Image>().sprite = problem;
+            yield return new WaitForSeconds(delay);
+        }
     }
 }
