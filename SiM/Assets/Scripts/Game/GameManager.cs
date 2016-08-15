@@ -8,11 +8,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector]
     public static float currentTime;
-    [HideInInspector]
     public static bool hasWon;
-    [HideInInspector]
     public static Color? currentColor;
 
     private static ColorChooser chosenColor;
@@ -53,9 +50,10 @@ public class GameManager : MonoBehaviour
                     isDragging = true;
                     if(mouseColor.Equals(pixel.color))
                     {
-                        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
+                        print(currentColor);
+                        if (Input.GetMouseButton(0))
                             pixel.OnSelect(currentColor);
-                        else if (Input.GetMouseButton(1) && !Input.GetMouseButton(0))
+                        else if (Input.GetMouseButton(1))
                             pixel.OnSelect(null);
                         if (CheckWin())
                             ScoreManager.AddScore(currentLevel, Mathf.RoundToInt(currentTime));
@@ -76,8 +74,10 @@ public class GameManager : MonoBehaviour
         else if(!Input.GetMouseButton(0) && !Input.GetMouseButton(1))
         {
             isDragging = false;
-            currentColor = null;
+            mouseColor = null;
         }
+
+        currentTime += Time.deltaTime;
     }
 
     public bool CheckWin()

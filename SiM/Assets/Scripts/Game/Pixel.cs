@@ -16,27 +16,29 @@ public class Pixel : MonoBehaviour
     public Vector2 coordinates;
 
     private SpriteRenderer spriteRenderer;
+    private TextMesh xText;
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        xText = GetComponentInChildren<TextMesh>();
     }
 
-    public void Init(Color solution, Color background)
+    public void Init(Color _solution, Color _background)
     {
-        this.solution = solution;
-        this.background = background;
-        this.color = background;
+        solution = _solution;
+        background = _background;
+
+        color = background;
         spriteRenderer.color = background;
 
         float gamma = (float)(0.2126f * background.r + 0.7152f * background.g + 0.0722 * background.b);
         gamma = (gamma > 0.5f) ? 0f : 1f;
-        GetComponentInChildren<TextMesh>().color = new Color(gamma, gamma, gamma);
+        xText.color = new Color(gamma, gamma, gamma);
     }
         
     public void OnSelect(Color? _color)
     {
-        TextMesh xText = GetComponentInChildren<TextMesh>();
         if (color.Equals(background))
         {
             if (_color == null)
@@ -63,7 +65,7 @@ public class Pixel : MonoBehaviour
 
     public bool IsColorRight()
     {
-        return solution.Equals(color.Value);
+        return solution.Equals(color);
     }
 
     IEnumerator Wooble()

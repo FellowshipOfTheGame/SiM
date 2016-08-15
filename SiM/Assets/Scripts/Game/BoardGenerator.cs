@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 public class BoardGenerator : MonoBehaviour
 {
-    [HideInInspector]
     public static int level = -1;
 
     [System.Serializable]
@@ -62,7 +61,7 @@ public class BoardGenerator : MonoBehaviour
         availableColors.Add(null);
 
 
-        GameObject line = Instantiate<GameObject>(linePrefab);
+        GameObject line = Instantiate(linePrefab);
         line.GetComponent<Line>().coordinates = new Vector2(-1, -1);
 
         line.transform.SetParent(boardObject.transform);
@@ -75,7 +74,7 @@ public class BoardGenerator : MonoBehaviour
             for (int j = 0; j < map.width; j++)
             {
                 board[j, i] = inlineBoard[i * map.width + j];
-                GameObject spriteObject = Instantiate<GameObject>(pixelPrefab);
+                GameObject spriteObject = Instantiate(pixelPrefab);
                 spriteObject.transform.SetParent(boardObject.transform);
                 spriteObject.transform.localPosition = new Vector2(j, i);
 
@@ -103,7 +102,7 @@ public class BoardGenerator : MonoBehaviour
             for (int w = 0; w < colorWidth; w++)
             {
 
-                GameObject background = GameObject.Instantiate<GameObject>(iconPrefab);
+                GameObject background = Instantiate(iconPrefab);
                 if (w == 0)
                 {
                     if (h == 1)
@@ -130,14 +129,14 @@ public class BoardGenerator : MonoBehaviour
 
                 if (w == 0 && h == 1)
                 {
-                    colorChooser = GameObject.Instantiate<GameObject>(iconPrefab);
+                    colorChooser = Instantiate(iconPrefab);
                     colorChooser.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 }
                 else
                 {
                     if (colorCounter < availableColors.Count)
                     {
-                        colorChooser = GameObject.Instantiate<GameObject>(colorChooserPrefab);
+                        colorChooser = Instantiate(colorChooserPrefab);
                         colorChooser.GetComponent<ColorChooser>().color = availableColors[colorCounter];
                         colorCounter++;
                     }
@@ -177,7 +176,7 @@ public class BoardGenerator : MonoBehaviour
                 {
                     if (!actualColor.Equals(backgroundColor))
                     {
-                        GameObject tipObject = GameObject.Instantiate<GameObject>(tipSquarePrefab);
+                        GameObject tipObject = Instantiate(tipSquarePrefab);
                         tipObject.transform.SetParent(boardObject.transform);
                         tipObject.transform.localPosition = new Vector2(-timesCount, i);
                         tipObject.GetComponent<SpriteRenderer>().color = actualColor;
@@ -211,7 +210,7 @@ public class BoardGenerator : MonoBehaviour
                 {
                     if (!actualColor.Equals(backgroundColor))
                     {
-                        GameObject tipObject = GameObject.Instantiate<GameObject>(tipSquarePrefab);
+                        GameObject tipObject = Instantiate(tipSquarePrefab);
                         tipObject.transform.SetParent(boardObject.transform);
                         tipObject.transform.localPosition = new Vector2(-timesCount, i);
                         tipObject.GetComponent<SpriteRenderer>().color = actualColor;
@@ -237,7 +236,7 @@ public class BoardGenerator : MonoBehaviour
 
             if (timesCount == 1)
             {
-                GameObject tipObject = GameObject.Instantiate<GameObject>(tipSquarePrefab);
+                GameObject tipObject = Instantiate(tipSquarePrefab);
                 tipObject.transform.SetParent(boardObject.transform);
                 tipObject.transform.localPosition = new Vector2(-timesCount, i);
                 tipObject.GetComponent<SpriteRenderer>().color = Color.white;
@@ -270,7 +269,7 @@ public class BoardGenerator : MonoBehaviour
                 {
                     if (!actualColor.Equals(backgroundColor))
                     {
-                        GameObject tipObject = GameObject.Instantiate<GameObject>(tipSquarePrefab);
+                        GameObject tipObject = Instantiate(tipSquarePrefab);
                         tipObject.transform.SetParent(boardObject.transform);
                         tipObject.transform.localPosition = new Vector2(j, map.height + timesCount);
                         tipObject.GetComponent<SpriteRenderer>().color = actualColor;
@@ -302,7 +301,7 @@ public class BoardGenerator : MonoBehaviour
                 {
                     if (!actualColor.Equals(backgroundColor))
                     {
-                        GameObject tipObject = GameObject.Instantiate<GameObject>(tipSquarePrefab);
+                        GameObject tipObject = Instantiate(tipSquarePrefab);
                         tipObject.transform.SetParent(boardObject.transform);
                         tipObject.transform.localPosition = new Vector2(j, map.height + timesCount);
                         tipObject.GetComponent<SpriteRenderer>().color = actualColor;
@@ -328,7 +327,7 @@ public class BoardGenerator : MonoBehaviour
 
             if (timesCount == 0)
             {
-                GameObject tipObject = GameObject.Instantiate<GameObject>(tipSquarePrefab);
+                GameObject tipObject = Instantiate(tipSquarePrefab);
                 tipObject.transform.SetParent(boardObject.transform);
                 tipObject.transform.localPosition = new Vector2(j, map.height + timesCount);
                 tipObject.GetComponent<SpriteRenderer>().color = Color.white;
@@ -348,7 +347,7 @@ public class BoardGenerator : MonoBehaviour
 
         for (int i = 0; i < map.width; i++)
         {
-            GameObject lineObject = GameObject.Instantiate<GameObject>(linePrefab);
+            GameObject lineObject = Instantiate(linePrefab);
             lineObject.transform.SetParent(boardObject.transform);
             lineObject.transform.localPosition = new Vector2(-0.5f - (horizontalMaxTips - map.width) / 2, i);
             lineObject.transform.localScale = new Vector3(map.width + horizontalMaxTips, 1, 1);
@@ -358,7 +357,7 @@ public class BoardGenerator : MonoBehaviour
 
             if (i % 5 == 4 && i != map.width - 1)
             {
-                GameObject drawLine = GameObject.Instantiate<GameObject>(iconPrefab);
+                GameObject drawLine = Instantiate(iconPrefab);
                 drawLine.GetComponent<SpriteRenderer>().sprite = sprites.center;
                 drawLine.GetComponent<SpriteRenderer>().color = new Color(0.1485f, 0.1953f, 0.21875f, 0.5f);
                 drawLine.transform.SetParent(lineObject.transform);
@@ -369,7 +368,7 @@ public class BoardGenerator : MonoBehaviour
         
         for (int i = 0; i < map.height; i++)
         {
-            GameObject lineObject = GameObject.Instantiate<GameObject>(linePrefab);
+            GameObject lineObject = Instantiate(linePrefab);
             lineObject.transform.SetParent(boardObject.transform);
             lineObject.transform.localPosition = new Vector2(i, map.height - 0.5f + (verticalMaxTips - map.height) / 2);
             lineObject.transform.localScale = new Vector3(1, verticalMaxTips + map.height, 1);
@@ -379,7 +378,7 @@ public class BoardGenerator : MonoBehaviour
 
             if (i % 5 == 4 && i != map.height - 1)
             {
-                GameObject drawLine = GameObject.Instantiate<GameObject>(iconPrefab);
+                GameObject drawLine = Instantiate(iconPrefab);
                 drawLine.GetComponent<SpriteRenderer>().sprite = sprites.center;
                 drawLine.GetComponent<SpriteRenderer>().color = new Color(0.1485f, 0.1953f, 0.21875f, 0.5f);
                 drawLine.transform.SetParent(lineObject.transform);

@@ -12,6 +12,6 @@ public class LevelButton : MonoBehaviour
     public void OnClick()
     {
         BoardGenerator.level = level;
-        SceneManager.LoadSceneAsync("Game");
+        SceneManager.LoadScene("Game");
     }
 }

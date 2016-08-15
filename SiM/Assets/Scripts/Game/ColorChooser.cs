@@ -8,10 +8,11 @@ using System.Collections.Generic;
 
 public class ColorChooser : MonoBehaviour
 {
-    public bool selected;
-    public Color? _color;
     public Sprite emptySprite;
     public Sprite xSprite;
+
+    [HideInInspector]
+    public bool selected;
 
     private SpriteRenderer spriteRenderer;
 
@@ -20,6 +21,7 @@ public class ColorChooser : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private Color? _color;
     public Color? color
     {
         get

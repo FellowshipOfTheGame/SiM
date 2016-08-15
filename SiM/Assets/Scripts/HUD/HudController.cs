@@ -9,18 +9,19 @@ using System.Collections.Generic;
 public class HudController : MonoBehaviour
 {
     public GameManager gameManager;
-    public Image gameWinBackground;
+    public Text levelNumberText;
     public Text gameWinText;
+    public Image gameWinBackground;
 
     [Range(0f, 2f)]
     public float delay = 0.5f;
-    public string gameWinString = "Voce venceu!";
 
     private bool hasWon;
 
     void Start()
     {
         hasWon = false;
+        levelNumberText.text = (BoardGenerator.level + 1).ToString("00");
     }
 
     void Update()
@@ -37,10 +38,8 @@ public class HudController : MonoBehaviour
         float time = 0f;
         Color c1 = gameWinText.color;
         Color c2 = gameWinBackground.color;
-        //string timeString = Util.SecondsToString(GameManager.currentTime);
 
         c1.a = c2.a = 0f;
-        gameWinText.text = gameWinString;// + timeString;
         gameWinBackground.gameObject.SetActive(true);
 
         do
@@ -50,6 +49,10 @@ public class HudController : MonoBehaviour
             gameWinBackground.color = c2;
             yield return null;
             time += Time.deltaTime;
-        } while (time < delay);
+        } while (time <= delay);
+
+        c1.a = c2.a = 1f;
+        gameWinText.color = c1;
+        gameWinBackground.color = c2;
     }
 }
