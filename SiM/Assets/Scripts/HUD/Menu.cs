@@ -51,6 +51,8 @@ public class Menu : MonoBehaviour
         }
 
         nameText.text = ScoreManager.GetName();
+
+		currentPage = ScoreManager.GetLevel () / (int)(collumns * collumns);
     }
 
     void Update()

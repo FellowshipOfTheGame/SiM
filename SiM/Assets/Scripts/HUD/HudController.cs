@@ -54,5 +54,12 @@ public class HudController : MonoBehaviour
         c1.a = c2.a = 1f;
         gameWinText.color = c1;
         gameWinBackground.color = c2;
+
+		time = 2f;
+		while (time > 0) {
+			time -= Time.deltaTime;
+			yield return null;
+		}
+		SceneManager.LoadScene ("Menu");
     }
 }

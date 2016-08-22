@@ -65,8 +65,9 @@ public class BoardGenerator : MonoBehaviour
         line.GetComponent<Line>().coordinates = new Vector2(-1, -1);
 
         line.transform.SetParent(boardObject.transform);
+		line.transform.localPosition = new Vector2(map.width / 2 + (map.width % 2 - 1) * 0.5f, map.height / 2 + (map.width % 2 - 1) * 0.5f);
         line.transform.localScale = new Vector3(map.width, map.height, 1);
-        line.transform.localPosition = new Vector2(map.width / 2, map.height / 2);
+        
 
 
         for (int i = 0; i < map.height; i++)
@@ -370,7 +371,7 @@ public class BoardGenerator : MonoBehaviour
         {
             GameObject lineObject = Instantiate(linePrefab);
             lineObject.transform.SetParent(boardObject.transform);
-            lineObject.transform.localPosition = new Vector2(i, map.height - 0.5f + (verticalMaxTips - map.height) / 2);
+			lineObject.transform.localPosition = new Vector2(i, map.height - 0.5f + (verticalMaxTips - map.height - 1) / 2 + (1 - map.width % 2) * 0.5f) ;
             lineObject.transform.localScale = new Vector3(1, verticalMaxTips + map.height, 1);
             lineObject.GetComponent<Line>().colorVariant = ((i % 2) == 0) ? false : true;
             lineObject.GetComponent<Line>().LowLight();

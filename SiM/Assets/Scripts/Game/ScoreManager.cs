@@ -95,15 +95,16 @@ public class ScoreManager : MonoBehaviour
 
     public static void AddScore(int level, int score)
     {
-        if (level < playerData.scores.Count)
-            return;
+		if (level < playerData.scores.Count) 
+			return;
         playerData.AddScore(score);
     }
 
     public static bool Sync()
     {
         if (!playerData.isSync)
-            instance.StartCoroutine(SyncCoroutine());
+            //instance.StartCoroutine(SyncCoroutine());
+            instance.Save();
         return playerData.isSync;
     }
 
@@ -205,6 +206,7 @@ public class ScoreManager : MonoBehaviour
             using (FileStream stream = File.Open(Application.persistentDataPath + filename, FileMode.Open))
                 playerData = (PlayerData)formatter.Deserialize(stream);
             success = true;
+            playerData.isSync = true;
         }
         catch (Exception)
         {
@@ -221,6 +223,7 @@ public class ScoreManager : MonoBehaviour
             using (FileStream stream = File.Open(Application.persistentDataPath + filename, FileMode.Create))
                 formatter.Serialize(stream, playerData);
             success = true;
+            playerData.isSync = true;
         }
         catch (Exception)
         {

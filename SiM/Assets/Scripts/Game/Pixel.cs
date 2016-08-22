@@ -65,7 +65,7 @@ public class Pixel : MonoBehaviour
 
     public bool IsColorRight()
     {
-        return solution.Equals(color);
+		return solution.Equals(spriteRenderer.color);
     }
 
     IEnumerator Wooble()
