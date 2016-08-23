@@ -59,16 +59,13 @@ public class ScoreManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    //void Start()
-    //{
-    //    if (playerData == null)
-    //    {
-    //        if (Load())
-    //            SceneManager.LoadScene("Menu");
-    //    }
-    //    else
-    //        Sync();
-    //}
+    void Start()
+    {
+#if !UNITY_WEBGL
+        if (Load())
+            SceneManager.LoadScene("Menu");
+#endif
+    }
 
     public static void NewPlayer(string name, int id)
     {
@@ -103,8 +100,13 @@ public class ScoreManager : MonoBehaviour
     public static bool Sync()
     {
         if (!playerData.isSync)
-            //instance.StartCoroutine(SyncCoroutine());
+        {
+#if UNITY_WEBGL
+            instance.StartCoroutine(SyncCoroutine());
+#else
             instance.Save();
+#endif
+        }
         return playerData.isSync;
     }
 
