@@ -83,7 +83,7 @@ public class Menu : MonoBehaviour
                     text = "--:--";
                 menuLevels[i].GetComponentInChildren<Text>().text = text;
             }
-            else if(level == ScoreManager.GetLevel())
+            else if(level == ScoreManager.GetLevel() && level < levels.textures.Length)
             {
                 menuLevels[i].GetComponent<Image>().sprite = lockedLevel;
                 menuLevels[i].GetComponentInChildren<Text>().text = "";
