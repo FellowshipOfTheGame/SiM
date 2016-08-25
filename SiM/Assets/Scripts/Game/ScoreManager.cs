@@ -202,7 +202,6 @@ public class ScoreManager : MonoBehaviour
     {
         BinaryFormatter formatter = new BinaryFormatter();
         bool success = false;
-        File.Delete(Application.persistentDataPath + filename);
         try
         {
             using (FileStream stream = File.Open(Application.persistentDataPath + filename, FileMode.Open))

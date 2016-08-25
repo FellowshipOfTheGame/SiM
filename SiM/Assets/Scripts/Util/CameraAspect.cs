@@ -26,6 +26,8 @@ public class CameraAspect : MonoBehaviour
         // obtain camera component so we can modify its viewport
         Camera camera = GetComponent<Camera>();
 
+        camera.Render();
+
         // if scaled height is less than current height, add letterbox
         if (scaleheight < 1.0f)
         {
